@@ -691,6 +691,62 @@
                 </thead>
                 <tbody id="leadsTableBody">
                     <!-- Leads will be populated here -->
+					<script>
+						// Show the leads in the table when the page loads
+						function renderLeads() {
+							const tbody = document.getElementById("leadsTableBody");
+							tbody.innerHTML = ""; // clear table
+
+							leads.forEach(lead => {
+								const row = document.createElement("tr");
+								row.innerHTML = `
+									<td>
+										<div class="building-info">${lead.buildingName}</div>
+										<div class="building-detail">${lead.mgmtCompany || ''}</div>
+									</td>
+									<td>${lead.location}</td>
+									<td>${lead.units} units</td>
+									<td><span class="lead-score-badge ${lead.score >= 80 ? 'score-high' : lead.score >=60 ? 'score-medium':'score-low'}">${lead.score}</span></td>
+									<td>${lead.lastActivity}</td>
+									<td>${lead.nextAction}</td>
+								`;
+								tbody.appendChild(row);
+							});
+						}
+
+						// Show modal
+						function openModal() {
+							document.getElementById("leadModal").style.display = "flex";
+						}
+
+						// Hide modal
+						function closeModal() {
+							document.getElementById("leadModal").style.display = "none";
+						}
+
+						// Save new lead
+						document.getElementById("leadForm").addEventListener("submit", function(e) {
+							e.preventDefault();
+
+							const newLead = {
+								buildingName: document.getElementById("buildingName").value,
+								mgmtCompany: document.getElementById("mgmtCompany").value,
+								location: document.getElementById("city").value,
+								units: parseInt(document.getElementById("units").value),
+								score: Math.floor(Math.random() * 40) + 60,
+								lastActivity: "New lead added",
+								nextAction: "Triage",
+							};
+
+							leads.push(newLead);
+							renderLeads();
+							closeModal();
+						});
+
+						// Run when page loads
+						window.addEventListener("DOMContentLoaded", renderLeads);
+					</script>
+
                 </tbody>
             </table>
         </div>
