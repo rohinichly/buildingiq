@@ -512,7 +512,6 @@
     </div>
 
     <div class="container">
-        <!-- KPI Dashboard -->
         <div class="kpi-grid">
             <div class="kpi-card animate-in">
                 <span class="kpi-icon">🏢</span>
@@ -548,7 +547,6 @@
             </div>
         </div>
 
-        <!-- Lead Scoring Factors -->
         <div class="lead-scoring-section">
             <h2>Lead Scoring Model</h2>
             <p style="color: #666; margin-top: 0.5rem;">Our proprietary scoring algorithm evaluates building characteristics and owner behavior</p>
@@ -582,7 +580,6 @@
             </div>
         </div>
 
-        <!-- Lead Pipeline -->
         <div class="pipeline-section">
             <h2>Lead Pipeline</h2>
             <div class="pipeline-stages">
@@ -614,7 +611,6 @@
             </div>
         </div>
 
-        <!-- Energy Savings Calculator -->
         <div class="calculator-section">
             <h2>ROI Calculator</h2>
             <p style="color: #666; margin-top: 0.5rem;">Estimate potential savings for any building</p>
@@ -662,7 +658,6 @@
             </div>
         </div>
 
-        <!-- Lead Table -->
         <div class="leads-table">
             <div class="table-header">
                 <h2>Lead Database</h2>
@@ -690,13 +685,11 @@
                     </tr>
                 </thead>
                 <tbody id="leadsTableBody">
-                    <!-- Leads will be populated here -->
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Add Lead Modal -->
     <div id="leadModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -784,95 +777,189 @@
         </div>
     </div>
 
-    <script>
-        // Sample data with NYC-specific buildings
-        let leads = [
-            {
-                id: 1,
-                buildingName: "Park Avenue Towers",
-                location: "Manhattan, NY",
-                units: 250,
-                score: 92,
-                lastActivity: "Downloaded ROI calculator",
-                nextAction: "Schedule demo",
-                mgmtCompany: "Sterling Properties",
-                decisionMaker: "Regional Manager",
-                energyCost: 180000,
-                characteristics: ["boiler", "old", "ll97"]
-            },
-            {
-                id: 2,
-                buildingName: "Brooklyn Heights Residences",
-                location: "Brooklyn, NY",
-                units: 180,
-                score: 85,
-                lastActivity: "Visited pricing page 3x",
-                nextAction: "Send case study",
-                mgmtCompany: "Urban Living LLC",
-                decisionMaker: "Building Owner",
-                energyCost: 145000,
-                characteristics: ["boiler", "old"]
-            },
-            {
-                id: 3,
-                buildingName: "Queens Plaza Complex",
-                location: "Queens, NY",
-                units: 420,
-                score: 78,
-                lastActivity: "Requested info via email",
-                nextAction: "Qualify decision maker",
-                mgmtCompany: "First Service Residential",
-                decisionMaker: "Property Manager",
-                energyCost: 320000,
-                characteristics: ["boiler", "chiller", "ll97"]
-            },
-            {
-                id: 4,
-                buildingName: "Riverside Gardens",
-                location: "Manhattan, NY",
-                units: 156,
-                score: 71,
-                lastActivity: "Webinar attendee",
-                nextAction: "Follow-up call",
-                mgmtCompany: "Rudin Management",
-                decisionMaker: "Regional Manager",
-                energyCost: 135000,
-                characteristics: ["boiler", "old"]
-            },
-            {
-                id: 5,
-                buildingName: "Bronx Community Housing",
-                location: "Bronx, NY",
-                units: 340,
-                score: 68,
-                lastActivity: "Site visit 2 weeks ago",
-                nextAction: "Send proposal",
-                mgmtCompany: "NYC Housing Authority",
-                decisionMaker: "Maintenance Supervisor",
-                energyCost: 280000,
-                characteristics: ["boiler", "old", "ll97"]
-            }
 <script>
-  function renderLeads() {
-    const tbody = document.getElementById("leadsTableBody");
-    tbody.innerHTML = "";
+    // Sample data with NYC-specific buildings
+    let leads = [{
+        id: 1,
+        buildingName: "Park Avenue Towers",
+        location: "Manhattan, NY",
+        units: 250,
+        score: 92,
+        lastActivity: "Downloaded ROI calculator",
+        nextAction: "Schedule demo",
+        mgmtCompany: "Sterling Properties"
+    }, {
+        id: 2,
+        buildingName: "Brooklyn Heights Residences",
+        location: "Brooklyn, NY",
+        units: 180,
+        score: 85,
+        lastActivity: "Visited pricing page 3x",
+        nextAction: "Send case study",
+        mgmtCompany: "Urban Living LLC"
+    }, {
+        id: 3,
+        buildingName: "Queens Plaza Complex",
+        location: "Queens, NY",
+        units: 420,
+        score: 78,
+        lastActivity: "Requested info via email",
+        nextAction: "Qualify decision maker",
+        mgmtCompany: "First Service Residential"
+    }, {
+        id: 4,
+        buildingName: "Riverside Gardens",
+        location: "Manhattan, NY",
+        units: 156,
+        score: 71,
+        lastActivity: "Webinar attendee",
+        nextAction: "Follow-up call",
+        mgmtCompany: "Rudin Management"
+    }, {
+        id: 5,
+        buildingName: "Bronx Community Housing",
+        location: "Bronx, NY",
+        units: 340,
+        score: 68,
+        lastActivity: "Site visit 2 weeks ago",
+        nextAction: "Send proposal",
+        mgmtCompany: "NYC Housing Authority"
+    }];
 
-    leads.forEach(lead => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>
-          <div class="building-info">${lead.buildingName}</div>
-          <div class="building-detail">${lead.mgmtCompany || ''}</div>
-        </td>
-        <td>${lead.location}</td>
-        <td>${lead.units} units</td>
-        <td><span class="lead-score-badge ${lead.score >= 80 ? 'score-high' : lead.score >=60 ? 'score-medium':'score-low'}">${lead.score}</span></td>
-        <td>${lead.lastActivity}</td>
-        <td>${lead.nextAction}</td>
-      `;
-      tbody.appendChild(row);
+    // --- DOM Element References ---
+    const leadsTableBody = document.getElementById('leadsTableBody');
+    const leadModal = document.getElementById('leadModal');
+    const leadForm = document.getElementById('leadForm');
+
+    /**
+     * Determines the CSS class for a lead score badge based on its value.
+     * @param {number} score - The lead's score.
+     * @returns {string} The CSS class ('score-high', 'score-medium', or 'score-low').
+     */
+    const getScoreClass = (score) => {
+        if (score >= 80) return 'score-high';
+        if (score >= 60) return 'score-medium';
+        return 'score-low';
+    };
+
+    /**
+     * Renders all leads from the `leads` array into the HTML table.
+     */
+    const renderLeads = () => {
+        // Clear the existing table rows to prevent duplicates
+        leadsTableBody.innerHTML = '';
+
+        // Loop through each lead and create a table row for it
+        leads.forEach(lead => {
+            const row = document.createElement('tr');
+            const scoreClass = getScoreClass(lead.score);
+
+            row.innerHTML = `
+                <td>
+                    <div class="building-info">${lead.buildingName}</div>
+                    <div class="building-detail">${lead.mgmtCompany}</div>
+                </td>
+                <td>${lead.location}</td>
+                <td>${lead.units} units</td>
+                <td><span class="lead-score-badge ${scoreClass}">${lead.score}</span></td>
+                <td>${lead.lastActivity}</td>
+                <td>${lead.nextAction}</td>
+            `;
+            leadsTableBody.appendChild(row);
+        });
+    };
+    
+    // --- Modal Functions ---
+    const openModal = () => {
+        leadModal.style.display = 'flex';
+    };
+
+    const closeModal = () => {
+        leadModal.style.display = 'none';
+    };
+    
+    /**
+     * A simple function to calculate a score for a new lead based on form inputs.
+     * @param {object} newLead - The new lead object from the form.
+     * @returns {number} The calculated score.
+     */
+    const calculateNewScore = (newLead) => {
+        let score = 30; // Base score
+        if (newLead.units > 100) score += 20;
+        if (newLead.units > 200) score += 10;
+        if (newLead.energyCost > 100000) score += 15;
+        if (newLead.buildingAge > 50) score += 10;
+        if (newLead.decisionMaker === 'owner' || newLead.decisionMaker === 'regional') score += 10;
+        if (document.getElementById('ll97').checked) score += 15;
+
+        return Math.min(score, 100); // Cap score at 100
+    };
+
+    // --- Form Submission Handler ---
+    leadForm.addEventListener('submit', (event) => {
+        // Prevent the default form action (which reloads the page)
+        event.preventDefault();
+
+        // Create a new lead object from the form values
+        const newLead = {
+            id: Date.now(), // Use a timestamp for a unique ID
+            buildingName: document.getElementById('buildingName').value,
+            mgmtCompany: document.getElementById('mgmtCompany').value,
+            location: `${document.getElementById('city').value}, NY`,
+            units: parseInt(document.getElementById('units').value),
+            lastActivity: "Newly added",
+            nextAction: "Initial outreach",
+            // Add other properties from your form
+            buildingAge: parseInt(document.getElementById('buildingAge').value),
+            energyCost: parseInt(document.getElementById('energyCost').value),
+            decisionMaker: document.getElementById('decisionMaker').value
+        };
+        
+        // Calculate the score for the new lead
+        newLead.score = calculateNewScore(newLead);
+
+        // Add the new lead to the main array
+        leads.push(newLead);
+
+        // Re-render the table with the new data
+        renderLeads();
+
+        // Close the modal and reset the form fields
+        closeModal();
+        leadForm.reset();
     });
-  }
+    
+    // --- ROI Calculator Function ---
+    const calculateROI = () => {
+        const units = parseFloat(document.getElementById('calcUnits').value);
+        const cost = parseFloat(document.getElementById('calcCost').value);
+        const age = parseFloat(document.getElementById('calcAge').value);
+        const efficiency = parseFloat(document.getElementById('calcEfficiency').value);
+        
+        // Simple ROI logic
+        let savingsPercentage = 0.15; // Base savings
+        savingsPercentage += (age > 50) ? 0.10 : 0;
+        savingsPercentage += (1 - efficiency) * 0.2;
 
-  window.addEventListener("DOMContentLoaded", renderLeads);
+        const annualSavings = cost * savingsPercentage;
+        const implementationCost = units * 125; // Example cost per unit
+        const paybackPeriod = (implementationCost / annualSavings) * 12;
+        const carbonReduction = (annualSavings / 1000) * 0.45; // Rough estimate
+
+        // Display results
+        document.getElementById('annualSavings').textContent = `$${annualSavings.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+        document.getElementById('paybackPeriod').textContent = `${paybackPeriod.toFixed(1)} months`;
+        document.getElementById('carbonReduction').textContent = `${carbonReduction.toFixed(2)} tons`;
+        document.getElementById('calcResults').style.display = 'block';
+    };
+
+
+    // --- Initial Page Load ---
+    // This runs when the page is fully loaded, ensuring all elements are available.
+    document.addEventListener('DOMContentLoaded', () => {
+        renderLeads();
+    });
 </script>
+
+</body>
+</html>
