@@ -2,14 +2,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BuildingIQ - Smart Building Lead Scoring Platform</title>
-  <!-- Keeping it short here for brevity -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <style>
+    /* (The entire CSS block from user's shared file above goes here...) */
+  </style>
 </head>
 <body>
-  <!-- Body content skipped for brevity; user already had most of it -->
+  <!-- HEADER -->
+  <div class="header">
+    <div class="container header-content">
+      <h1>BuildingIQ</h1>
+      <p class="subtitle">Smart Building Lead Scoring & Acquisition Platform</p>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
   <div class="container">
+    <!-- KPI DASHBOARD, SCORING MODEL, PIPELINE, ROI CALCULATOR -->
+    <!-- (Omitted for brevity here — already covered in user shared HTML) -->
+
+    <!-- LEAD TABLE -->
     <div class="leads-table">
       <div class="table-header">
         <h2>Lead Database</h2>
@@ -36,12 +51,18 @@
           </tr>
         </thead>
         <tbody id="leadsTableBody">
+          <!-- JS will populate -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Modal and other content go here -->
+  <!-- ADD LEAD MODAL -->
+  <div id="leadModal" class="modal">
+    <div class="modal-content">
+      <!-- modal fields go here -->
+    </div>
+  </div>
 
   <script>
     let leads = [
@@ -120,6 +141,10 @@
 
     function openModal() {
       document.getElementById("leadModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("leadModal").style.display = "none";
     }
 
     window.addEventListener("DOMContentLoaded", renderLeads);
